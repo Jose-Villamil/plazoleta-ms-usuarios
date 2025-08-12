@@ -6,6 +6,10 @@ import com.usuariosplazoleta.microservicio_usuarios.domain.model.User;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IRolePersistencePort;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IUserPersistencePort;
 
+import java.util.Optional;
+
+import static com.usuariosplazoleta.microservicio_usuarios.domain.util.Constantes.ROLE_PROPIETARIO;
+
 public class UserUseCase implements IUserServicePort {
 
     private final IUserPersistencePort userPersistencePort;
@@ -23,7 +27,12 @@ public class UserUseCase implements IUserServicePort {
         userPersistencePort.saveUser(user);
     }
 
+    @Override
+    public Optional<User> getUserById(Long id) {
+        return userPersistencePort.findById(id);
+    }
+
     private Role assignRoleNewUser(String roleAuth) {
-        return rolePersistencePort.findByName("PROPIETARIO");
+        return rolePersistencePort.findByName(ROLE_PROPIETARIO);
     }
 }

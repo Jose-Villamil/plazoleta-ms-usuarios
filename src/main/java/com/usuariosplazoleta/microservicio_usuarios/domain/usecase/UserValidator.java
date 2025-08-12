@@ -7,39 +7,39 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.regex.Pattern;
 
+import static com.usuariosplazoleta.microservicio_usuarios.domain.util.DomainMessages.*;
+import static com.usuariosplazoleta.microservicio_usuarios.domain.util.ValidationPatterns.*;
+
 public class UserValidator {
 
-   // private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\+?[0-9]{1,13}$");
-    private static final Pattern DOCUMENT_PATTERN = Pattern.compile("^[0-9]+$");
+
 
     private UserValidator() {
     }
 
     public static void validate(User user) {
-        requireNonBlank(user.getName(), "Nombre");
-        requireNonBlank(user.getLastName(), "Apellido");
-        requireNonBlank(user.getDocument(), "Documento de identidad");
-        validatePattern(user.getDocument(), DOCUMENT_PATTERN, "Documento inválido");
-        requireNonBlank(user.getPhoneNumber(), "Celular");
-        validatePattern(user.getPhoneNumber(), PHONE_PATTERN, "Teléfono inválido");
-        requireNonNull(user.getBirthDate(), "Fecha de nacimiento");
+        requireNonBlank(user.getName(), NAME_REQUIRED);
+        requireNonBlank(user.getLastName(), LAST_REQUIRED);
+        requireNonBlank(user.getDocument(), DOCUMENT_REQUIRED);
+        validatePattern(user.getDocument(), DOCUMENT_PATTERN, INVALID_DOCUMENT);
+        requireNonBlank(user.getPhoneNumber(), NUMBER_PHONE_REQUIRED);
+        validatePattern(user.getPhoneNumber(), PHONE_PATTERN, INVALID_PHONE);
+        requireNonNull(user.getBirthDate(), BIRTH_DATE_REQUIRED);
         validateAge(user.getBirthDate());
-        requireNonBlank(user.getEmail(), "Correo");
-        validatePattern(user.getEmail(), EMAIL_PATTERN, "Correo inválido");
-        requireNonBlank(user.getPassword(), "Clave");
+        requireNonBlank(user.getEmail(), EMAIL_REQUIRED);
+        validatePattern(user.getEmail(), EMAIL_PATTERN, INVALID_EMAIL);
+        requireNonBlank(user.getPassword(), PASSWORD_REQUIRED);
     }
 
     private static void requireNonBlank(String value, String fieldName) {
         if (value == null || value.trim().isEmpty()) {
-            throw new DomainException(String.format("El campo %s no puede ser nulo o vacío", fieldName));
+            throw new DomainException(fieldName);
         }
     }
 
     private static void requireNonNull(LocalDate value, String fieldName) {
         if (value == null) {
-            throw new DomainException(String.format("El campo %s no puede ser nulo", fieldName));
+            throw new DomainException(fieldName);
         }
     }
 
@@ -51,7 +51,7 @@ public class UserValidator {
 
     private static void validateAge(LocalDate birthDate) {
         if (Period.between(birthDate, LocalDate.now()).getYears() < 18) {
-            throw new DomainException("El usuario debe ser mayor de edad");
+            throw new DomainException(USER_LEGAL_AGE);
         }
     }
 }

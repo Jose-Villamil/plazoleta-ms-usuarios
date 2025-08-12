@@ -1,6 +1,7 @@
 package com.usuariosplazoleta.microservicio_usuarios.infrastructure.input.rest;
 
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.response.UserResponseDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.handler.IUserHandler;
 import com.usuariosplazoleta.microservicio_usuarios.infrastructure.configuration.Constants;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("api/users")
 @RequiredArgsConstructor
 public class UserRestcontroller {
     private final IUserHandler userHandler;
@@ -22,6 +23,11 @@ public class UserRestcontroller {
         userHandler.saveUser(userRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Collections.singletonMap(Constants.MESSAGE, Constants.USER_CREATED));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userHandler.getUserById(id));
     }
 
 }

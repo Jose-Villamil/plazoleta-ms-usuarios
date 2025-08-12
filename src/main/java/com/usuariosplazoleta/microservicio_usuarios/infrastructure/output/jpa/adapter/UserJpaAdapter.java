@@ -7,6 +7,8 @@ import com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.re
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class UserJpaAdapter implements IUserPersistencePort {
 
@@ -18,5 +20,11 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userEntityMapper.toEntity(user));
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id)
+                .map(userEntityMapper::toUser);
     }
 }
