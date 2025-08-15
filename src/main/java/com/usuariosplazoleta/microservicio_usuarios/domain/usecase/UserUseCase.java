@@ -8,7 +8,7 @@ import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IUserPersistenceP
 
 import java.util.Optional;
 
-import static com.usuariosplazoleta.microservicio_usuarios.domain.util.Constantes.ROLE_PROPIETARIO;
+import static com.usuariosplazoleta.microservicio_usuarios.domain.util.Constantes.ROLE_OWNER;
 
 public class UserUseCase implements IUserServicePort {
 
@@ -33,6 +33,6 @@ public class UserUseCase implements IUserServicePort {
     }
 
     private Role assignRoleNewUser(String roleAuth) {
-        return rolePersistencePort.findByName(ROLE_PROPIETARIO);
+        return rolePersistencePort.findByName(ROLE_OWNER);
     }
 }

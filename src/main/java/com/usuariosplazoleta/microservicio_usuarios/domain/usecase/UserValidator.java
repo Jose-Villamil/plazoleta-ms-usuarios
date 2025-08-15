@@ -18,17 +18,17 @@ public class UserValidator {
     }
 
     public static void validate(User user) {
-        requireNonBlank(user.getName(), NAME_REQUIRED);
-        requireNonBlank(user.getLastName(), LAST_REQUIRED);
-        requireNonBlank(user.getDocument(), DOCUMENT_REQUIRED);
-        validatePattern(user.getDocument(), DOCUMENT_PATTERN, INVALID_DOCUMENT);
-        requireNonBlank(user.getPhoneNumber(), NUMBER_PHONE_REQUIRED);
-        validatePattern(user.getPhoneNumber(), PHONE_PATTERN, INVALID_PHONE);
-        requireNonNull(user.getBirthDate(), BIRTH_DATE_REQUIRED);
+        requireNonBlank(user.getName(), String.format(FIELD_REQUIRED,"Nombre"));
+        requireNonBlank(user.getLastName(), String.format(FIELD_REQUIRED,"Apellido"));
+        requireNonBlank(user.getDocument(), String.format(FIELD_REQUIRED,"Documento"));
+        validatePattern(user.getDocument(), DOCUMENT_PATTERN, String.format(FIELD_INVALID,"Documento"));
+        requireNonBlank(user.getPhoneNumber(), String.format(FIELD_REQUIRED,"Celular"));
+        validatePattern(user.getPhoneNumber(), PHONE_PATTERN, String.format(FIELD_INVALID,"Celular"));
+        requireNonNull(user.getBirthDate(), String.format(FIELD_REQUIRED,"Fecha de nacimiento"));
         validateAge(user.getBirthDate());
-        requireNonBlank(user.getEmail(), EMAIL_REQUIRED);
-        validatePattern(user.getEmail(), EMAIL_PATTERN, INVALID_EMAIL);
-        requireNonBlank(user.getPassword(), PASSWORD_REQUIRED);
+        requireNonBlank(user.getEmail(), String.format(FIELD_REQUIRED,"Correo"));
+        validatePattern(user.getEmail(), EMAIL_PATTERN, String.format(FIELD_INVALID,"Correo"));
+        requireNonBlank(user.getPassword(), String.format(FIELD_REQUIRED,"Clave"));
     }
 
     private static void requireNonBlank(String value, String fieldName) {
