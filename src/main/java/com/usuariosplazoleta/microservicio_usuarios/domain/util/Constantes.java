@@ -7,5 +7,5 @@ public final class Constantes {
     public static final String ROLE_OWNER = "PROPIETARIO";
     public static final String ROLE_ADMIN = "ADMINISTRADOR";
     public static final String ROLE_CLIENT = "CLIENTE";
-    public static final String ROLE_EMPLOYEE = "PROPIETARIO";
+    public static final String ROLE_EMPLOYEE = "EMPLEADO";
 }

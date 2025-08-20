@@ -15,6 +15,7 @@ import com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.re
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -22,9 +23,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BeanConfiguration {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
-    private final PasswordEncoder passwordEncoder;
     private final IRoleRepository roleRepository;
     private final IRoleEntityMapper roleEntityMapper;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public IUserServicePort userServicePort() {
@@ -33,7 +38,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
-        return new UserJpaAdapter(userRepository, userEntityMapper, passwordEncoder);
+        return new UserJpaAdapter(userRepository, userEntityMapper, passwordEncoder());
     }
 
     @Bean
