@@ -75,6 +75,28 @@ class UserUseCaseTest {
     }
 
     @Test
+    void ownerCreatesEmployee_ok_setsEmployeeRole_persists_andAssociates() {
+        User input = validEmployeeToCreate();
+        Role employeeRole = new Role(); employeeRole.setName(ROLE_EMPLOYEE);
+
+        when(rolePersistencePort.findByName(ROLE_EMPLOYEE)).thenReturn(Optional.of(employeeRole));
+        when(userPersistencePort.saveUser(any(User.class))).thenAnswer(inv -> {
+            User arg = inv.getArgument(0);
+            arg.setId(42L);
+            return arg;
+        });
+
+        useCase.saveUserEmployee(input, 7L, "ROLE_PROPIETARIO");
+
+        assertEquals(ROLE_EMPLOYEE, input.getRole().getName());
+        ArgumentCaptor<RestaurantEmployee> cap = ArgumentCaptor.forClass(RestaurantEmployee.class);
+        verify(restaurantPersistencePort).saveRestaurantEmployee(cap.capture());
+        assertEquals(7L, cap.getValue().getRestaurantId());
+        assertEquals(42L, cap.getValue().getEmployeeId());
+    }
+
+
+    @Test
     void whenCallerNotAdmin_throwsDomainException() {
         User input = validOwnerToCreate();
         DomainException ex = assertThrows(DomainException.class,
