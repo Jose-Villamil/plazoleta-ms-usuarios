@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/saveUser").hasAnyRole("ADMINISTRADOR")
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/saveUserEmployee").hasAnyRole("PROPIETARIO")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/saveClients").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e.authenticationEntryPoint(entryPoint).accessDeniedHandler(accessDenied))

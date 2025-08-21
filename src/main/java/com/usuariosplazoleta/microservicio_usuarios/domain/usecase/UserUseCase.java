@@ -28,7 +28,7 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public User saveUser(User user, String roleAuth) {
-        UserValidator.validateUser(user);
+        UserValidator.validateUserOwner(user);
         String role = normalizeRole(roleAuth);
         if (!ROLE_ADMIN.equalsIgnoreCase(role)) {
             throw new DomainException(String.format(USER_DOESNOT_HAVE_ROL, role));
@@ -58,6 +58,15 @@ public class UserUseCase implements IUserServicePort {
             throw new DomainException(EMPLOYEE_CREATED_WHIT_ERROR);
         }
         return user;
+    }
+
+    @Override
+    public User saveUserClient(User user) {
+        UserValidator.validateClient(user);
+        Role clientRole = rolePersistencePort.findByName(ROLE_CLIENT)
+                .orElseThrow(() -> new DomainException(String.format(ROLE_NOT_FOUND, ROLE_CLIENT)));
+        user.setRole(clientRole);
+        return userPersistencePort.saveUser(user);
     }
 
     @Override

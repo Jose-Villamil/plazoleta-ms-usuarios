@@ -1,5 +1,6 @@
 package com.usuariosplazoleta.microservicio_usuarios.application.handler.impl;
 
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserClientRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserEmployeeRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.response.UserResponseDto;
@@ -8,6 +9,7 @@ import com.usuariosplazoleta.microservicio_usuarios.application.mapper.IUserRequ
 import com.usuariosplazoleta.microservicio_usuarios.application.mapper.IUserResponseMapper;
 import com.usuariosplazoleta.microservicio_usuarios.domain.api.IUserServicePort;
 import com.usuariosplazoleta.microservicio_usuarios.domain.exception.DomainException;
+import com.usuariosplazoleta.microservicio_usuarios.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +35,14 @@ public class UserHandler implements IUserHandler {
         String roleAuth = authentication.getAuthorities().iterator().next().getAuthority();
         userServicePort.saveUserEmployee(userRequestMapper.employeeToUser(userEmployeeRequestDto), userEmployeeRequestDto.getRestaurantId(),roleAuth);
     }
+
+    @Override
+    public UserResponseDto saveUserClient(UserClientRequestDto dto) {
+        User user = userRequestMapper.clientToUser(dto);
+        User saved = userServicePort.saveUserClient(user);
+        return userResponseMapper.toResponse(saved);
+    }
+
 
     @Override
     public UserResponseDto getUserById(Long id) {

@@ -12,18 +12,24 @@ import static com.usuariosplazoleta.microservicio_usuarios.domain.util.Validatio
 
 public class UserValidator {
 
-
-
     private UserValidator() {
     }
 
-    public static void validateUser(User user) {
+    public static void validateUserOwner(User user) {
         validateEmployee(user);
         requireNonNull(user.getBirthDate(), String.format(FIELD_REQUIRED,"Fecha de nacimiento"));
         validateAge(user.getBirthDate());
     }
 
     public static void validateEmployee(User user) {
+        validateUser(user);
+    }
+
+    public static void validateClient(User user) {
+        validateUser(user);
+    }
+
+    public static void validateUser(User user) {
         requireNonBlank(user.getName(), String.format(FIELD_REQUIRED,"Nombre"));
         requireNonBlank(user.getLastName(), String.format(FIELD_REQUIRED,"Apellido"));
         requireNonBlank(user.getDocument(), String.format(FIELD_REQUIRED,"Documento"));
