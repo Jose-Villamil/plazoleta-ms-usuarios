@@ -17,15 +17,19 @@ public class UserValidator {
     private UserValidator() {
     }
 
-    public static void validate(User user) {
+    public static void validateUser(User user) {
+        validateEmployee(user);
+        requireNonNull(user.getBirthDate(), String.format(FIELD_REQUIRED,"Fecha de nacimiento"));
+        validateAge(user.getBirthDate());
+    }
+
+    public static void validateEmployee(User user) {
         requireNonBlank(user.getName(), String.format(FIELD_REQUIRED,"Nombre"));
         requireNonBlank(user.getLastName(), String.format(FIELD_REQUIRED,"Apellido"));
         requireNonBlank(user.getDocument(), String.format(FIELD_REQUIRED,"Documento"));
         validatePattern(user.getDocument(), DOCUMENT_PATTERN, String.format(FIELD_INVALID,"Documento"));
         requireNonBlank(user.getPhoneNumber(), String.format(FIELD_REQUIRED,"Celular"));
         validatePattern(user.getPhoneNumber(), PHONE_PATTERN, String.format(FIELD_INVALID,"Celular"));
-        requireNonNull(user.getBirthDate(), String.format(FIELD_REQUIRED,"Fecha de nacimiento"));
-        validateAge(user.getBirthDate());
         requireNonBlank(user.getEmail(), String.format(FIELD_REQUIRED,"Correo"));
         validatePattern(user.getEmail(), EMAIL_PATTERN, String.format(FIELD_INVALID,"Correo"));
         requireNonBlank(user.getPassword(), String.format(FIELD_REQUIRED,"Clave"));

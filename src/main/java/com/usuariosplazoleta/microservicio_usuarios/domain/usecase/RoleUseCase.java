@@ -4,6 +4,8 @@ import com.usuariosplazoleta.microservicio_usuarios.domain.api.IRoleServicePort;
 import com.usuariosplazoleta.microservicio_usuarios.domain.model.Role;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IRolePersistencePort;
 
+import java.util.Optional;
+
 public class RoleUseCase implements IRoleServicePort {
 
     private final IRolePersistencePort rolePersistencePort;
@@ -12,7 +14,7 @@ public class RoleUseCase implements IRoleServicePort {
     }
 
     @Override
-    public Role findByName(String name) {
+    public Optional<Role> findByName(String name) {
         return rolePersistencePort.findByName(name);
     }
 

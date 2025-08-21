@@ -2,6 +2,8 @@ package com.usuariosplazoleta.microservicio_usuarios.domain.api;
 
 import com.usuariosplazoleta.microservicio_usuarios.domain.model.Role;
 
+import java.util.Optional;
+
 public interface IRoleServicePort {
-    Role findByName(String name);
+   Optional<Role> findByName(String name);
 }

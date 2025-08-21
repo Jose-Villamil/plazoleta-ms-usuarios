@@ -1,5 +1,6 @@
 package com.usuariosplazoleta.microservicio_usuarios.infrastructure.input.rest;
 
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserEmployeeRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.response.UserResponseDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.handler.IUserHandler;
@@ -13,9 +14,9 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
-public class UserRestcontroller {
+public class UserRestController {
     private final IUserHandler userHandler;
 
     @PostMapping("/saveUser")
@@ -28,6 +29,13 @@ public class UserRestcontroller {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userHandler.getUserById(id));
+    }
+
+    @PostMapping("/saveUserEmployee")
+    public ResponseEntity<Map<String,String>> saveUserEmployee(@RequestBody UserEmployeeRequestDto userEmployeeRequestDto) {
+        userHandler.saveUserEmployee(userEmployeeRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Collections.singletonMap(Constants.MESSAGE, Constants.USER_CREATED));
     }
 
 }

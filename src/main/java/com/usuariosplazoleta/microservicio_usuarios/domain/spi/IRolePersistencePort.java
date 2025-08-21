@@ -2,9 +2,8 @@ package com.usuariosplazoleta.microservicio_usuarios.domain.spi;
 
 import com.usuariosplazoleta.microservicio_usuarios.domain.model.Role;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface IRolePersistencePort {
-    Role findByName(String name);
-    List<Role> getAllRoles();
+    Optional<Role> findByName(String name);
 }
