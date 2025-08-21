@@ -2,6 +2,7 @@ package com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.a
 
 import com.usuariosplazoleta.microservicio_usuarios.domain.model.User;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IUserPersistencePort;
+import com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.entity.UserEntity;
 import com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.mapper.IUserEntityMapper;
 import com.usuariosplazoleta.microservicio_usuarios.infrastructure.output.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,10 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(userEntityMapper.toEntity(user));
+        UserEntity entity = userRepository.save(userEntityMapper.toEntity(user));
+       return userEntityMapper.toUser(entity);
     }
 
     @Override

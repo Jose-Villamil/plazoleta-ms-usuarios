@@ -1,5 +1,6 @@
 package com.usuariosplazoleta.microservicio_usuarios.application.handler.impl;
 
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserEmployeeRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.response.UserResponseDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.handler.IUserHandler;
@@ -24,6 +25,13 @@ public class UserHandler implements IUserHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String roleAuth = authentication.getAuthorities().iterator().next().getAuthority();
         userServicePort.saveUser(userRequestMapper.toUser(userRequestDto), roleAuth);
+    }
+
+    @Override
+    public void saveUserEmployee(UserEmployeeRequestDto userEmployeeRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String roleAuth = authentication.getAuthorities().iterator().next().getAuthority();
+        userServicePort.saveUserEmployee(userRequestMapper.employeeToUser(userEmployeeRequestDto), userEmployeeRequestDto.getRestaurantId(),roleAuth);
     }
 
     @Override

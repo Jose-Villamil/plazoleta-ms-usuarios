@@ -1,6 +1,9 @@
 server:
   port: 8081
 spring:
+  cloud:
+    config:
+      enabled: false
   application:
     name: user-service
   datasource:
@@ -14,3 +17,7 @@ security:
   jwt:
     secret: ${JWT_SECRET:clavesecretaparamicroserviciosdeplazoletadedecomidas}
     expiration-minutes: 120
+
+restaurants:
+  service:
+    url: http://localhost:8080/api/v1/restaurantEmployee

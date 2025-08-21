@@ -54,16 +54,16 @@ class RoleUseCaseTest {
 
     @Test
     void FoundRoleByName() {
-        when(rolePersistencePort.findByName("ADMINISTRADOR")).thenReturn(role);
+        when(rolePersistencePort.findByName("ADMINISTRADOR")).thenReturn(Optional.of(role));
 
-        Role result = roleUseCase.findByName("ADMINISTRADOR");
+        Role result = roleUseCase.findByName("ADMINISTRADOR").orElseThrow();
 
         verify(rolePersistencePort).findByName("ADMINISTRADOR");
         assertNotNull(result);
         assertEquals("ADMINISTRADOR", result.getName());
     }
 
-    //HU2
+
     @Test
     void userExists_ReturnsUser() {
         Long userId = 1L;

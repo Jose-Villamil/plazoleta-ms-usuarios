@@ -1,5 +1,6 @@
 package com.usuariosplazoleta.microservicio_usuarios.infrastructure.input.rest;
 
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserEmployeeRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.response.UserResponseDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.handler.IUserHandler;
@@ -28,6 +29,13 @@ public class UserRestController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userHandler.getUserById(id));
+    }
+
+    @PostMapping("/saveUserEmployee")
+    public ResponseEntity<Map<String,String>> saveUserEmployee(@RequestBody UserEmployeeRequestDto userEmployeeRequestDto) {
+        userHandler.saveUserEmployee(userEmployeeRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Collections.singletonMap(Constants.MESSAGE, Constants.USER_CREATED));
     }
 
 }

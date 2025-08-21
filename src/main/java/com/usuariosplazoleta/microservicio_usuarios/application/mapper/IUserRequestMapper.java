@@ -1,5 +1,6 @@
 package com.usuariosplazoleta.microservicio_usuarios.application.mapper;
 
+import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserEmployeeRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.application.dto.request.UserRequestDto;
 import com.usuariosplazoleta.microservicio_usuarios.domain.model.User;
 import org.mapstruct.Mapper;
@@ -16,6 +17,8 @@ public interface IUserRequestMapper {
 
     @Mapping(target = "birthDate", expression = "java(parseDate(userRequestDto.getBirthDate()))")
     User toUser(UserRequestDto userRequestDto);
+
+    User employeeToUser(UserEmployeeRequestDto userEmployeeRequestDto);
 
     default LocalDate parseDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
