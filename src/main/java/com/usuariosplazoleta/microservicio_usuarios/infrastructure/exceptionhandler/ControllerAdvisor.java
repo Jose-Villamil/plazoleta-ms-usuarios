@@ -3,16 +3,16 @@ package com.usuariosplazoleta.microservicio_usuarios.infrastructure.exceptionhan
 import com.usuariosplazoleta.microservicio_usuarios.domain.exception.DomainException;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Collections;
 import java.util.Map;
 
-import static com.usuariosplazoleta.microservicio_usuarios.infrastructure.configuration.Constants.ERROR_MICROSERVICE_COMMUNICATION;
+import static com.usuariosplazoleta.microservicio_usuarios.infrastructure.configuration.Constants.*;
 
 @ControllerAdvice
 public class ControllerAdvisor {
@@ -22,6 +22,12 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleNoDataFoundException(DomainException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ex.getMessage()));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(MESSAGE, ERROR_DUPLICATE_RECORD));
     }
 
     @ExceptionHandler(Exception.class)

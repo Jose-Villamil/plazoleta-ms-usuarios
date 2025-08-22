@@ -8,6 +8,7 @@ import com.usuariosplazoleta.microservicio_usuarios.domain.model.User;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IRestaurantPersistencePort;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IRolePersistencePort;
 import com.usuariosplazoleta.microservicio_usuarios.domain.spi.IUserPersistencePort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -41,6 +42,7 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
+    @Transactional
     public User saveUserEmployee(User user, Long idRestaurant, String roleAuth) {
         UserValidator.validateEmployee(user);
         String role = normalizeRole(roleAuth);
@@ -52,12 +54,11 @@ public class UserUseCase implements IUserServicePort {
         User userSave= userPersistencePort.saveUser(user);
 
         try {
-            restaurantPersistentPort
-                    .saveRestaurantEmployee(new RestaurantEmployee(idRestaurant, userSave.getId()));
-        } catch (Exception ex) {
-            throw new DomainException(EMPLOYEE_CREATED_WHIT_ERROR);
+            restaurantPersistentPort.saveRestaurantEmployee(new RestaurantEmployee(idRestaurant, userSave.getId()));
+        } catch (DomainException ex) {
+            throw new DomainException(String.format(EMPLOYEE_CREATED_WHIT_ERROR, ex.getMessage()));
         }
-        return user;
+        return userSave;
     }
 
     @Override

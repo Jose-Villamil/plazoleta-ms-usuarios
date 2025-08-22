@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "user")
+@Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,23 +18,22 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false)
     private String name;
-    @Column(name = "apellido")
+    @Column(name = "apellido", nullable = false)
     private String lastName;
-    @Column(name = "numero_documento")
+    @Column(name = "numero_documento", nullable = false, unique = true)
     private String document;
-    @Column(name = "celular")
+    @Column(name = "celular", nullable = false)
     private String phoneNumber;
     @Column(name = "fecha_nacimiento")
     private LocalDate birthDate;
-    @Column(name = "correo")
+    @Column(name = "correo", nullable = false, unique = true)
     private String email;
-    @Column(name = "clave")
+    @Column(name = "clave", nullable = false)
     private String password;
     @ManyToOne
-    @JoinColumn(name = "id_role")
+    @JoinColumn(name = "id_rol", nullable = false)
     private RoleEntity role;
-
 }
 
