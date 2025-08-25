@@ -1,5 +1,6 @@
 server:
-  port: 8081
+  port: ${PORT_USUARIOS}
+
 spring:
   cloud:
     config:
@@ -7,17 +8,18 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/db_usuarios
-    username: root
-    password: Password
+    url: ${URL_DB_USUARIOS}
+    username: ${USERNAME_DB}
+    password: ${PASSWORD_DB}
   jpa:
     hibernate:
       ddl-auto: update
+
 security:
   jwt:
-    secret: ${JWT_SECRET:clavesecretaparamicroserviciosdeplazoletadedecomidas}
+    secret: ${JWT_SECRET}
     expiration-minutes: 120
 
 restaurants:
   service:
-    url: http://localhost:8080/api/v1/restaurantEmployee
+    url: ${URL_SERVICIO_RESTAURANTES}

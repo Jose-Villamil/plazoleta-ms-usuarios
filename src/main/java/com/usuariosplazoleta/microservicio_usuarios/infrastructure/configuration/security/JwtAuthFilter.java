@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private Logger log = Logger.getLogger(JwtAuthFilter.class.getName());
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
@@ -31,12 +33,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 var roles = ((List<Object>) claims.get("roles"))
                         .stream().map(Object::toString).map(SimpleGrantedAuthority::new).toList();
 
-                // No cargamos desde BD; usamos los claims.
                 var auth = new UsernamePasswordAuthenticationToken(email, null, roles);
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            } catch (Exception ignored) { /* token inválido/expirado: sigue anónimo */ }
+            } catch (Exception ex) {
+                log.info(ex.getMessage());
+            }
         }
         chain.doFilter(req, res);
+    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui")
+                || path.equals("/swagger-ui.html");
     }
 }
 

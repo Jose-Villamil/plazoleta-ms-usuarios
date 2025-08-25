@@ -18,9 +18,9 @@ public class JwtProvider {
         Date now = new Date();
         Date exp = new Date(now.getTime() + minutes * 60_000);
         return Jwts.builder()
-                .setSubject(subjectEmail)            // email
-                .claim("uid", userId)               // <-- útil para ownership entre MS
-                .claim("roles", roleAuthorities)    // ["ROLE_ADMINISTRADOR",…]
+                .setSubject(subjectEmail)
+                .claim("uid", userId)
+                .claim("roles", roleAuthorities)
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
